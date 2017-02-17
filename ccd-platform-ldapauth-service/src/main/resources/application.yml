@@ -15,6 +15,7 @@ ldap:
     userDn: uid=shaopeng.yuan@joyoudata.com,ou=北京办,ou=深圳市卓优数据科技有限公司
     password: a12345678A
     username: shaopeng.yuan
+    email: shaopeng.yuan@joyoudata.com
     base: dc=joyoudata,dc=com
     directory.type: NORMAL
 

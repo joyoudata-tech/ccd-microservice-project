@@ -1,50 +1,73 @@
 package authService.domain;
 
-import javax.naming.Name;
+import java.util.Date;
+import java.util.List;
 
-import org.springframework.ldap.odm.annotations.Attribute;
-import org.springframework.ldap.odm.annotations.Entry;
-import org.springframework.ldap.odm.annotations.Id;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.ldap.odm.annotations.Transient;
 
-@Entry(objectClasses = {"inetOrgPerson", "organizationalPerson", "person", "top"}, base = "ou=Departments")
+@Document(collection = "oauth2_user")
 public class UserDetail {
 	
 	@Id
-	private Name id;
+	private String id;
 	
-	@Attribute(name = "cn")
 	private String fullName;
 	
-	@Attribute(name = "sn")
 	private String lastName;
 	
-	@Attribute(name = "givenName")
 	private String firstName;
 	
-	@Attribute(name = "mail")
 	private String email;
 	
-	@Attribute(name = "userPassword")
 	private String userPassword;
 	
-	@Attribute(name = "employeeNumber")
 	private int employeeNumber;
 	
-	@Attribute(name = "telephoneNumber")
 	private String phone;
+	
+	@CreatedDate
+    private Date dateCreated;
 	
     @Transient
     private String unit;
 
     @Transient
     private String department;
+	
+	private List<String> rights;
+	
+    public String getUserPassword() {
+		return userPassword;
+	}
 
-	public Name getId() {
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
+	}
+
+	public List<String> getRights() {
+		return rights;
+	}
+
+	public void setRights(List<String> rights) {
+		this.rights = rights;
+	}
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Name id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -111,22 +134,4 @@ public class UserDetail {
 	public void setDepartment(String department) {
 		this.department = department;
 	}
-    
-	@Override
-	  public boolean equals(Object o) {
-	    if (this == o) return true;
-	    if (o == null || getClass() != o.getClass()) return false;
-
-	    UserDetail user = (UserDetail) o;
-
-	    if (id != null ? !id.equals(user.id) : user.id != null) return false;
-
-	    return true;
-	  }
-
-	  @Override
-	  public int hashCode() {
-	    return id != null ? id.hashCode() : 0;
-	  }
-
 }
