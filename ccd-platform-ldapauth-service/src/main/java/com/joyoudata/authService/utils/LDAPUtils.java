@@ -1,4 +1,4 @@
-package authService.utils;
+package com.joyoudata.authService.utils;
 
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.stereotype.Component;
 
-import authService.domain.UserDetail;
+import com.joyoudata.authService.domain.UserDetail;
 
 @SuppressWarnings("rawtypes")
-@Component(value = "ccdLDAPMapper")
+@Component(value = "coreLDAPMapper")
 public class LDAPUtils implements AttributesMapper {
 	
 	@Value("${ldap.contextSource.email}")

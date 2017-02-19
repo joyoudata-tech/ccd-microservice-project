@@ -1,4 +1,4 @@
-package authService.service.security;
+package com.joyoudata.authService.service.security;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import authService.domain.UserDetail;
+import com.joyoudata.authService.domain.UserDetail;
 
 /**
  * 普通用户认证权限提供服务 组件

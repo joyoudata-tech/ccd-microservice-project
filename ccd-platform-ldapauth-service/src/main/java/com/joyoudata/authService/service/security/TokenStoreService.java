@@ -1,4 +1,4 @@
-package authService.service.security;
+package com.joyoudata.authService.service.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,15 +16,15 @@ import org.springframework.security.oauth2.provider.token.AuthenticationKeyGener
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
-import authService.domain.OAuth2AuthenticationAccessToken;
-import authService.domain.OAuth2AuthenticationRefreshToken;
-import authService.repository.OAuth2AccessTokenRepository;
-import authService.repository.OAuth2RefreshTokenRepository;
+import com.joyoudata.authService.domain.OAuth2AuthenticationAccessToken;
+import com.joyoudata.authService.domain.OAuth2AuthenticationRefreshToken;
+import com.joyoudata.authService.repository.OAuth2AccessTokenRepository;
+import com.joyoudata.authService.repository.OAuth2RefreshTokenRepository;
 
 public class TokenStoreService implements TokenStore {
 	
 	@Autowired
-	private MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
 	
 	@Autowired
 	private OAuth2AccessTokenRepository tokenRepository;

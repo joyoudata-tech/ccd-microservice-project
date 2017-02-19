@@ -7,8 +7,24 @@ eureka:
       defaultZone: http://discovery:8761/eureka/
   instance:
     preferIpAddress: true
+
+security:
+  basic:
+    enabled: false
+
+#Client
+app:
+  client:
+    id: sso-auth-client
+    secret: mySecret
     
-  
+spring:
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 11111
+      database: auth-user-server
+
 ldap:
   contextSource:
     url: jdc.joyoudata.com:389
@@ -18,4 +34,5 @@ ldap:
     email: shaopeng.yuan@joyoudata.com
     base: dc=joyoudata,dc=com
     directory.type: NORMAL
+    searchScope: onelevel
 

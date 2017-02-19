@@ -1,4 +1,4 @@
-package authService.service.security;
+package com.joyoudata.authService.service.security;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import authService.domain.UserDetail;
-import authService.service.UserDetailService;
+import com.joyoudata.authService.domain.UserDetail;
+import com.joyoudata.authService.service.UserDetailService;
 
 /**
  * 用户角色权限的分配 
@@ -22,10 +22,10 @@ import authService.service.UserDetailService;
 public class UserAuthConfigService {
 	
 	@Autowired
-	private UserDetailService userDetailService;
+	private UserDetailService userService;
 	
 	public UserDetail getUser(String email) {
-		return userDetailService.findUserByEmail(email);
+		return userService.findUserByEmail(email);
 	}
 	
 	//获得用户的角色权限

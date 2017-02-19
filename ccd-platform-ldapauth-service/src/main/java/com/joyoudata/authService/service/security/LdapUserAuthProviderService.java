@@ -1,4 +1,4 @@
-package authService.service.security;
+package com.joyoudata.authService.service.security;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import authService.domain.UserDetail;
-import authService.service.UserDetailService;
-import authService.utils.LDAPUtils;
+import com.joyoudata.authService.domain.UserDetail;
+import com.joyoudata.authService.service.UserDetailService;
+import com.joyoudata.authService.utils.LDAPUtils;
 
 /**
  * Ldap用户认证提供 服务
@@ -31,7 +31,7 @@ public class LdapUserAuthProviderService implements AuthenticationProvider {
 	private UserDetailService userService;
 	
 	@Autowired
-	private UserAuthConfigService userAuthConfigService;
+	private UserAuthConfigService authConfigService;
 	
 	@Autowired
 	private LdapTemplate ldapTemplate;
@@ -74,8 +74,8 @@ public class LdapUserAuthProviderService implements AuthenticationProvider {
 				}
 			}
 			//赋予用户权限
-			List<GrantedAuthority> rights = userAuthConfigService.getRight(user);
-			return userAuthConfigService.signRolesInUser(user, rights);
+			List<GrantedAuthority> rights = authConfigService.getRight(user);
+			return authConfigService.signRolesInUser(user, rights);
 		}
 		throw new AuthenticationException("Your ldap authentication may be not correct,your application not throw the auth."){};
 	}

@@ -1,4 +1,4 @@
-package authService.service.security;
+package com.joyoudata.authService.service.security;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,62 +12,64 @@ import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.security.oauth2.provider.ClientRegistrationService;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
+import org.springframework.stereotype.Service;
 
-import authService.domain.ClientDetail;
-import authService.repository.ClientDetailRepository;
+import com.joyoudata.authService.domain.ClientDetail;
+import com.joyoudata.authService.repository.ClientDetailRepository;
 
+@Service
 public class ClientDetailService implements ClientDetailsService, ClientRegistrationService {
 	
 	@Autowired
     private PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	private ClientDetailRepository clientDetailRepository;
+	private ClientDetailRepository clientDetailsRepository;
 
 	@Override
 	public void addClientDetails(ClientDetails clientDetails) throws ClientAlreadyExistsException {
 		ClientDetail clientDetail = getMongoDBClientDetailsFromClient(clientDetails);
-		clientDetailRepository.save(clientDetail);
+		clientDetailsRepository.save(clientDetail);
 	}
 
 	@Override
 	public void updateClientDetails(ClientDetails clientDetails) throws NoSuchClientException {
-		ClientDetail clientDetail = clientDetailRepository.findByClientId(clientDetails.getClientId());
+		ClientDetail clientDetail = clientDetailsRepository.findByClientId(clientDetails.getClientId());
 		if (clientDetail == null) {
 			throw new NoSuchClientException("No Client found for id: " + clientDetails.getClientId());
 		}
-		clientDetailRepository.save(getMongoDBClientDetailsFromClient(clientDetails));
+		clientDetailsRepository.save(getMongoDBClientDetailsFromClient(clientDetails));
 	}
 
 	@Override
 	public void updateClientSecret(String clientId, String secret) throws NoSuchClientException {
-		ClientDetail clientDetail = clientDetailRepository.findByClientId(clientId);
+		ClientDetail clientDetail = clientDetailsRepository.findByClientId(clientId);
 		if (clientDetail == null) {
 			throw new NoSuchClientException("No Client found for id: " + clientId);
 		}
 		//密码需要被转换
 		clientDetail.setClientSecret(passwordEncoder.encode(secret));
-		clientDetailRepository.save(clientDetail);
+		clientDetailsRepository.save(clientDetail);
 	}
 
 	@Override
 	public void removeClientDetails(String clientId) throws NoSuchClientException {
-		ClientDetail clientDetail = clientDetailRepository.findByClientId(clientId);
+		ClientDetail clientDetail = clientDetailsRepository.findByClientId(clientId);
 		if (clientDetail == null) {
 			throw new NoSuchClientException("No Client found for id: " + clientId);
 		}
-		clientDetailRepository.delete(clientDetail);
+		clientDetailsRepository.delete(clientDetail);
 	}
 
 	@Override
 	public List listClientDetails() {
-		List<ClientDetail> clients = clientDetailRepository.findAll();
+		List<ClientDetail> clients = clientDetailsRepository.findAll();
 		return getClientsFromMongoDBClientDetails(clients);
 	}
 
 	@Override
 	public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
-		ClientDetail clientDetail = clientDetailRepository.findByClientId(clientId);
+		ClientDetail clientDetail = clientDetailsRepository.findByClientId(clientId);
 		if (clientDetail == null) {
 			throw new NoSuchClientException("No Client found for id: " + clientId);
 		}
@@ -76,12 +78,12 @@ public class ClientDetailService implements ClientDetailsService, ClientRegistra
 	
 	//新增删除所有
 	public void deleteAll() {
-		clientDetailRepository.deleteAll();
+		clientDetailsRepository.deleteAll();
 	}
 	
 	//新增按照原有clientDetail对象存储
 	public ClientDetail save(ClientDetail clientDetail) {
-		return clientDetailRepository.save(clientDetail);
+		return clientDetailsRepository.save(clientDetail);
 	}
 	
 	private ClientDetail getMongoDBClientDetailsFromClient(ClientDetails cd) {

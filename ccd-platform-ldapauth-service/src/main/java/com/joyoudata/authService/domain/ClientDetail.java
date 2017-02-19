@@ -1,4 +1,4 @@
-package authService.domain;
+package com.joyoudata.authService.domain;
 
 import java.util.Collection;
 import java.util.Map;

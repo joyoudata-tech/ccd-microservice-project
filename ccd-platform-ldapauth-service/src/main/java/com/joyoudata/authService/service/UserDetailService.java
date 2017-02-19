@@ -1,10 +1,10 @@
-package authService.service;
+package com.joyoudata.authService.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import authService.domain.UserDetail;
-import authService.repository.UserRepository;
+import com.joyoudata.authService.domain.UserDetail;
+import com.joyoudata.authService.repository.UserRepository;
 
 @Service
 public class UserDetailService {
