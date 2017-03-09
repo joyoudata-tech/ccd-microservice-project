@@ -1,12 +1,16 @@
 package com.joyoudata.authService.repository;
 
 import java.io.Serializable;
+import java.util.List;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.joyoudata.authService.domain.ClientDetail;
 
-public interface ClientDetailRepository extends MongoRepository<ClientDetail, Serializable>{
+public interface ClientDetailRepository extends PagingAndSortingRepository<ClientDetail, Serializable>{
+
+	ClientDetail findByClientId(String clientId);
 	
-	public ClientDetail findByClientId(String ClientId);
+	List<ClientDetail> findAll();
+
 }

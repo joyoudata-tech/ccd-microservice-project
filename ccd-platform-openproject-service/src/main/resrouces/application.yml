@@ -1,0 +1,26 @@
+server:
+  port: 9009
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery:8761/eureka/
+  instance:
+    preferIpAddress: true
+    
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://192.168.119.134:5432/mydb
+    username: myuser
+    password: mypassword
+    driverClassName: org.postgresql.Driver
+
+ribbon:
+  eureka:
+    enabled: true

@@ -1,5 +1,9 @@
 server:
-  port: 9007
+  port: 9093
+  
+logging:
+  level:
+    root: info
 
 eureka:
   client:
@@ -11,28 +15,54 @@ eureka:
 security:
   basic:
     enabled: false
-
-#Client
-app:
-  client:
-    id: sso-auth-client
-    secret: mySecret
     
 spring:
-  data:
-    mongodb:
-      host: 127.0.0.1
-      port: 11111
-      database: auth-user-server
-
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    platform: mysql
+    url: jdbc:mysql://192.168.119.134:3306/ccd??useUnicode=true&characterEncoding=UTF-8
+    username: myusername
+    password: mypassword
+    driverClassName: com.mysql.jdbc.Driver    
+     
 ldap:
   contextSource:
-    url: jdc.joyoudata.com:389
-    userDn: uid=shaopeng.yuan@joyoudata.com,ou=北京办,ou=深圳市卓优数据科技有限公司
+    url: ldap://jdc.joyoudata.com:389
+    base: DC=joyoudata,DC=com
+    userDn: shaopeng.yuan@joyoudata.com
     password: a12345678A
-    username: shaopeng.yuan
     email: shaopeng.yuan@joyoudata.com
-    base: dc=joyoudata,dc=com
-    directory.type: NORMAL
-    searchScope: onelevel
-
+    
+oauth2_server: 
+  clients:
+  - clientId: restapi
+    resourceIds: rest_api,joyouResource
+    clientSecret: restapipassword
+    refreshTokenValidity: 4500
+    accessTokenValidity: 4500
+    authorities: trust,read,write
+    authorizedGrantTypes: client_credentials,authorization_code,implicit,password,refresh_token
+    scope: trust,read,write
+    scoped: true
+    secretRequired: true
+    autoapprove: true
+  - clientId: project_restapi
+    resourceIds: rest_api,joyouResource
+    clientSecret: projectpassword
+    refreshTokenValidity: 4500
+    accessTokenValidity: 4500
+    authorities: trust,read,write
+    authorizedGrantTypes: client_credentials,authorization_code,implicit,password,refresh_token
+    scope: trust,read,write
+    scoped: true
+    secretRequired: true
+    autoapprove: true
+  users: 
+  - username: admin
+    password: 123.com
+    email: admin@joyoudata.com
+    scope: read,write,trust

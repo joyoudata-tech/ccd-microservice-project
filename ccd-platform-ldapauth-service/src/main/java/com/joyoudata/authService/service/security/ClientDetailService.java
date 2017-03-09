@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.joyoudata.authService.domain.ClientDetail;
 import com.joyoudata.authService.repository.ClientDetailRepository;
+import com.joyoudata.authService.utils.StringConvertUtils;
 
 @Service
 public class ClientDetailService implements ClientDetailsService, ClientRegistrationService {
@@ -24,106 +25,104 @@ public class ClientDetailService implements ClientDetailsService, ClientRegistra
     private PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	private ClientDetailRepository clientDetailsRepository;
+	private ClientDetailRepository clientDetailRepository;
 
 	@Override
 	public void addClientDetails(ClientDetails clientDetails) throws ClientAlreadyExistsException {
-		ClientDetail clientDetail = getMongoDBClientDetailsFromClient(clientDetails);
-		clientDetailsRepository.save(clientDetail);
+		ClientDetail client = getJDBCClientDetailsFromClient(clientDetails);
+		clientDetailRepository.save(client);
 	}
 
 	@Override
 	public void updateClientDetails(ClientDetails clientDetails) throws NoSuchClientException {
-		ClientDetail clientDetail = clientDetailsRepository.findByClientId(clientDetails.getClientId());
+		ClientDetail clientDetail = clientDetailRepository.findByClientId(clientDetails.getClientId());
 		if (clientDetail == null) {
-			throw new NoSuchClientException("No Client found for id: " + clientDetails.getClientId());
+			throw new ClientRegistrationException("Client not found with id '" + clientDetails.getClientId() + "'");
 		}
-		clientDetailsRepository.save(getMongoDBClientDetailsFromClient(clientDetails));
+		ClientDetail client = getJDBCClientDetailsFromClient(clientDetails);
+		clientDetailRepository.save(client);
 	}
 
 	@Override
 	public void updateClientSecret(String clientId, String secret) throws NoSuchClientException {
-		ClientDetail clientDetail = clientDetailsRepository.findByClientId(clientId);
+		ClientDetail clientDetail = clientDetailRepository.findByClientId(clientId);
 		if (clientDetail == null) {
-			throw new NoSuchClientException("No Client found for id: " + clientId);
+			throw new ClientRegistrationException("Client not found with id '" + clientId + "'");
 		}
-		//密码需要被转换
 		clientDetail.setClientSecret(passwordEncoder.encode(secret));
-		clientDetailsRepository.save(clientDetail);
+		clientDetailRepository.save(clientDetail);
 	}
 
 	@Override
 	public void removeClientDetails(String clientId) throws NoSuchClientException {
-		ClientDetail clientDetail = clientDetailsRepository.findByClientId(clientId);
+		ClientDetail clientDetail = clientDetailRepository.findByClientId(clientId);
 		if (clientDetail == null) {
-			throw new NoSuchClientException("No Client found for id: " + clientId);
+			throw new ClientRegistrationException("Client not found with id '" + clientId + "'");
 		}
-		clientDetailsRepository.delete(clientDetail);
+		clientDetailRepository.delete(clientDetail);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public List listClientDetails() {
-		List<ClientDetail> clients = clientDetailsRepository.findAll();
-		return getClientsFromMongoDBClientDetails(clients);
+		List clientDetails = clientDetailRepository.findAll();		
+		return getClientsFromJDBCClientDetails(clientDetails);
 	}
+	
+	public ClientDetail save(ClientDetail authClient) {
+        return clientDetailRepository.save(authClient);
+    }
 
-	@Override
-	public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
-		ClientDetail clientDetail = clientDetailsRepository.findByClientId(clientId);
-		if (clientDetail == null) {
-			throw new NoSuchClientException("No Client found for id: " + clientId);
-		}
-		return getClientFromMongoDBClientDetails(clientDetail);
-	}
-	
-	//新增删除所有
-	public void deleteAll() {
-		clientDetailsRepository.deleteAll();
-	}
-	
-	//新增按照原有clientDetail对象存储
-	public ClientDetail save(ClientDetail clientDetail) {
-		return clientDetailsRepository.save(clientDetail);
-	}
-	
-	private ClientDetail getMongoDBClientDetailsFromClient(ClientDetails cd) {
-		ClientDetail client = new ClientDetail();
-		client.setAccessTokenValiditySeconds(cd.getAccessTokenValiditySeconds());
-		client.setAdditionalInformation(cd.getAdditionalInformation());
-		client.setAuthorizedGrantTypes(cd.getAuthorizedGrantTypes());
-		client.setClientId(cd.getClientId());
-		client.setClientSecret(cd.getClientSecret());
-		client.setRefreshTokenValiditySeconds(cd.getRefreshTokenValiditySeconds());
-		client.setRegisteredRedirectUri(cd.getRegisteredRedirectUri());
-		client.setResourceIds(cd.getResourceIds());
-		client.setScope(cd.getScope());
-		client.setId(cd.getClientId());
-		client.setSecretRequired(cd.isSecretRequired());
-		client.setScoped(cd.isScoped());
-		return client;
-	}
-	
-	private BaseClientDetails getClientFromMongoDBClientDetails(ClientDetail clientDetails) {
-        BaseClientDetails bc = new BaseClientDetails();
-        bc.setAccessTokenValiditySeconds(clientDetails.getAccessTokenValiditySeconds());
-        bc.setAuthorizedGrantTypes(clientDetails.getAuthorizedGrantTypes());
-        bc.setClientId(clientDetails.getClientId());
-        bc.setClientSecret(clientDetails.getClientSecret());
-        bc.setRefreshTokenValiditySeconds(clientDetails.getRefreshTokenValiditySeconds());
-        bc.setRegisteredRedirectUri(clientDetails.getRegisteredRedirectUri());
-        bc.setResourceIds(clientDetails.getResourceIds());
-        bc.setScope(clientDetails.getScope());
-        return bc;
+    public void deleteAll() {
+    	clientDetailRepository.deleteAll();
     }
 	
-	private List<BaseClientDetails> getClientsFromMongoDBClientDetails(List<ClientDetail> clientDetails) {
+	private List<BaseClientDetails> getClientsFromJDBCClientDetails(List<ClientDetail> clientDetails) {
         List<BaseClientDetails> bcds = new LinkedList<>();
         if (clientDetails != null && !clientDetails.isEmpty()) {
             clientDetails.stream().forEach(mdbcd -> {
-                bcds.add(getClientFromMongoDBClientDetails(mdbcd));
+                bcds.add(getClientFromJDBCClientDetails(mdbcd));
             });
         }
         return bcds;
+    }
+
+	@Override
+	public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
+		ClientDetail client = clientDetailRepository.findByClientId(clientId);
+		if (client == null) {
+			throw new ClientRegistrationException("Client not found with id '" + clientId + "'");
+		}
+		return getClientFromJDBCClientDetails(client);
+	}
+	
+	private BaseClientDetails getClientFromJDBCClientDetails(ClientDetail clientDetails) {
+        BaseClientDetails bc = new BaseClientDetails();
+        bc.setAccessTokenValiditySeconds(clientDetails.getAccessTokenValidity());
+        bc.setAuthorizedGrantTypes(StringConvertUtils.stringToSet(clientDetails.getAuthorizedGrantTypes()));
+        bc.setClientId(clientDetails.getClientId());
+        bc.setClientSecret(clientDetails.getClientSecret());
+        bc.setRefreshTokenValiditySeconds(clientDetails.getRefreshTokenValidity());
+        bc.setRegisteredRedirectUri(StringConvertUtils.stringToSet(clientDetails.getWebServerRedirectUri()));
+        bc.setResourceIds(StringConvertUtils.stringToSet(clientDetails.getResourceIds()));
+        bc.setScope(StringConvertUtils.stringToSet(clientDetails.getScope()));
+        return bc;
+    }
+
+    private ClientDetail getJDBCClientDetailsFromClient(ClientDetails cd) {
+        ClientDetail clientDetails = new ClientDetail();
+        clientDetails.setAccessTokenValidity(cd.getAccessTokenValiditySeconds());
+        clientDetails.setAuthorizedGrantTypes(cd.getAuthorizedGrantTypes().toString());
+        clientDetails.setClientId(cd.getClientId());
+        clientDetails.setClientSecret(cd.getClientSecret());
+        clientDetails.setRefreshTokenValidity(cd.getRefreshTokenValiditySeconds());
+        clientDetails.setWebServerRedirectUri(cd.getRegisteredRedirectUri().toString());
+        clientDetails.setResourceIds(cd.getResourceIds().toString());
+        clientDetails.setScope(cd.getScope().toString());
+        clientDetails.setScoped(cd.isScoped());
+        clientDetails.setSecretRequired(cd.isSecretRequired());
+        clientDetails.setClientId(cd.getClientId());
+        return clientDetails;
     }
 
 }

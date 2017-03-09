@@ -13,6 +13,8 @@
 		<module>ccd-platform-config</module>
 		<module>ccd-platform-restful-example</module>
 		<module>ccd-platform-ldapauth-service</module>
+		<module>ccd-platform-openproject-service</module>
+		<module>ccd-platporm-apigateway-service</module>
 	</modules>
 
 	<parent>

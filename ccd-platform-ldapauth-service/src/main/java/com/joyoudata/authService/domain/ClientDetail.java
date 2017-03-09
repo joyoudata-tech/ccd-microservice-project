@@ -1,57 +1,53 @@
 package com.joyoudata.authService.domain;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document(collection="oauth2_client")
+@Entity
+@Table(name="oauth_client_details")
 public class ClientDetail {
 	
+	@Column(name="client_id")
 	@Id
-	private String id;
-	
-	@Indexed
 	private String clientId;
 	
-	private Set<String> resourceIds;
+	@Column(name="resource_ids")
+	private String resourceIds;
 	
-	private boolean secretRequired;
-	
-	@Indexed
+	@Column(name="client_secret")
 	private String clientSecret;
 	
-	private boolean scoped;
+	@Column(name="scope")
+	private String scope;
 	
-	private Set<String> scope;
+	@Column(name="authorized_grant_types")
+	private String authorizedGrantTypes;
 	
-	private Set<String> authorizedGrantTypes;
+	@Column(name="web_server_redirect_uri")
+	private String webServerRedirectUri;
 	
-    private Set<String> registeredRedirectUri;
-    
-    private Collection<String> authorities;
-    
-    private Integer accessTokenValiditySeconds;
-    
-    private Integer refreshTokenValiditySeconds;
-    
-    private boolean autoApprove;
-    
-    private Map<String, Object> additionalInformation;
-
-	public ClientDetail() {
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
+	@Column(name="authorities")
+	private String authorities;
+	
+	@Column(name="access_token_validity")
+	private Integer accessTokenValidity;
+	
+	@Column(name="refresh_token_validity")
+	private Integer refreshTokenValidity;
+	
+	@Column(name="additional_information")
+	private String additionalInformation;
+	
+	@Column(name="autoapprove")
+	private Boolean autoapprove;
+	
+	@Column(name="scoped")
+	private Boolean scoped;
+	
+	@Column(name="secretRequired")
+	private Boolean secretRequired;
 
 	public String getClientId() {
 		return clientId;
@@ -61,20 +57,12 @@ public class ClientDetail {
 		this.clientId = clientId;
 	}
 
-	public Set<String> getResourceIds() {
+	public String getResourceIds() {
 		return resourceIds;
 	}
 
-	public void setResourceIds(Set<String> resourceIds) {
+	public void setResourceIds(String resourceIds) {
 		this.resourceIds = resourceIds;
-	}
-
-	public boolean isSecretRequired() {
-		return secretRequired;
-	}
-
-	public void setSecretRequired(boolean secretRequired) {
-		this.secretRequired = secretRequired;
 	}
 
 	public String getClientSecret() {
@@ -85,75 +73,83 @@ public class ClientDetail {
 		this.clientSecret = clientSecret;
 	}
 
-	public boolean isScoped() {
-		return scoped;
-	}
-
-	public void setScoped(boolean scoped) {
-		this.scoped = scoped;
-	}
-
-	public Set<String> getScope() {
+	public String getScope() {
 		return scope;
 	}
 
-	public void setScope(Set<String> scope) {
+	public void setScope(String scope) {
 		this.scope = scope;
 	}
 
-	public Set<String> getAuthorizedGrantTypes() {
+	public String getAuthorizedGrantTypes() {
 		return authorizedGrantTypes;
 	}
 
-	public void setAuthorizedGrantTypes(Set<String> authorizedGrantTypes) {
+	public void setAuthorizedGrantTypes(String authorizedGrantTypes) {
 		this.authorizedGrantTypes = authorizedGrantTypes;
 	}
 
-	public Set<String> getRegisteredRedirectUri() {
-		return registeredRedirectUri;
+	public String getWebServerRedirectUri() {
+		return webServerRedirectUri;
 	}
 
-	public void setRegisteredRedirectUri(Set<String> registeredRedirectUri) {
-		this.registeredRedirectUri = registeredRedirectUri;
+	public void setWebServerRedirectUri(String webServerRedirectUri) {
+		this.webServerRedirectUri = webServerRedirectUri;
 	}
 
-	public Collection<String> getAuthorities() {
+	public String getAuthorities() {
 		return authorities;
 	}
 
-	public void setAuthorities(Collection<String> authorities) {
+	public void setAuthorities(String authorities) {
 		this.authorities = authorities;
 	}
 
-	public Integer getAccessTokenValiditySeconds() {
-		return accessTokenValiditySeconds;
+	public Integer getAccessTokenValidity() {
+		return accessTokenValidity;
 	}
 
-	public void setAccessTokenValiditySeconds(Integer accessTokenValiditySeconds) {
-		this.accessTokenValiditySeconds = accessTokenValiditySeconds;
+	public void setAccessTokenValidity(Integer accessTokenValidity) {
+		this.accessTokenValidity = accessTokenValidity;
 	}
 
-	public Integer getRefreshTokenValiditySeconds() {
-		return refreshTokenValiditySeconds;
+	public Integer getRefreshTokenValidity() {
+		return refreshTokenValidity;
 	}
 
-	public void setRefreshTokenValiditySeconds(Integer refreshTokenValiditySeconds) {
-		this.refreshTokenValiditySeconds = refreshTokenValiditySeconds;
+	public void setRefreshTokenValidity(Integer refreshTokenValidity) {
+		this.refreshTokenValidity = refreshTokenValidity;
 	}
 
-	public boolean isAutoApprove() {
-		return autoApprove;
-	}
-
-	public void setAutoApprove(boolean autoApprove) {
-		this.autoApprove = autoApprove;
-	}
-
-	public Map<String, Object> getAdditionalInformation() {
+	public String getAdditionalInformation() {
 		return additionalInformation;
 	}
 
-	public void setAdditionalInformation(Map<String, Object> additionalInformation) {
+	public void setAdditionalInformation(String additionalInformation) {
 		this.additionalInformation = additionalInformation;
+	}
+
+	public Boolean getAutoapprove() {
+		return autoapprove;
+	}
+
+	public void setAutoapprove(Boolean autoapprove) {
+		this.autoapprove = autoapprove;
+	}
+
+	public Boolean getScoped() {
+		return scoped;
+	}
+
+	public void setScoped(Boolean scoped) {
+		this.scoped = scoped;
+	}
+
+	public Boolean getSecretRequired() {
+		return secretRequired;
+	}
+
+	public void setSecretRequired(Boolean secretRequired) {
+		this.secretRequired = secretRequired;
 	}
 }
