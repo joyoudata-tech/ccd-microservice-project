@@ -37,7 +37,7 @@ public class UserLDAPAuthProviderService implements AuthenticationProvider{
 	@Autowired
 	private LDAPMapperUtil mapperAttributes;
 	
-	private String DEFAULT_RIGHT = "read";
+	private String DEFAULT_RIGHT = "USER";
 	
 	@Override
 	public Authentication authenticate(Authentication a) throws AuthenticationException {

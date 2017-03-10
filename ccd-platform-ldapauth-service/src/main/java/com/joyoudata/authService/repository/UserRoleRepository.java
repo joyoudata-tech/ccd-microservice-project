@@ -9,7 +9,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.joyoudata.authService.domain.User;
 import com.joyoudata.authService.domain.UserRole;
-
 @Transactional
 public interface UserRoleRepository extends PagingAndSortingRepository<UserRole, Serializable> {
 	

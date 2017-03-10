@@ -1,6 +1,5 @@
 package com.joyoudata.authService;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +17,7 @@ import org.springframework.ldap.core.ContextSource;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -36,14 +34,9 @@ import com.joyoudata.authService.service.UserService;
 @EnableJpaRepositories("com.joyoudata.authService.repository")
 @SessionAttributes("authorizationRequest")
 @ComponentScan
+@RestController
 @SpringBootApplication
 public class AuthServerMain extends WebMvcConfigurerAdapter{
-	
-	@RequestMapping("/user")
-	@ResponseBody
-	public Principal user(Principal user) {
-		return user;
-	}
 	
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
@@ -98,7 +91,7 @@ public class AuthServerMain extends WebMvcConfigurerAdapter{
                 adminUser.setPassword(encode);
                 userService.saveUser(adminUser);
                 List<String> employeeRights = new ArrayList<String>();
-                employeeRights.add(u.get("scope"));
+                employeeRights.add(u.get("role"));
                 userService.saveUserRolesWithUserName(u.get("username"), employeeRights);
             });
             

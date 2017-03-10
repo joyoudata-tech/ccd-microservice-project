@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -64,113 +65,84 @@ public class OAuth2ServerConfiguration {
 	
 	private static final String RESOURCE_ID = "joyouResource";
 	
-	@Configuration
-	@EnableResourceServer
-	protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+//	@Configuration
+//	@EnableResourceServer
+//	protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+//
+//		@Autowired
+//		private TokenStore tokenStore;
+//		
+//		@Autowired
+//		private AuthenticationManager authenticationManager;
+//		
+//		@Bean
+//		protected AuthenticationEntryPoint authenticationEntryPoint() {
+//			OAuth2AuthenticationEntryPoint authenticationEntryPoint = new OAuth2AuthenticationEntryPoint();
+//			return authenticationEntryPoint;
+//		}
+//		
+//		@Bean
+//		protected ClientCredentialsTokenEndpointFilter clientCredentialsTokenEndpointFilter() {
+//			ClientCredentialsTokenEndpointFilter filer = new ClientCredentialsTokenEndpointFilter();
+//			filer.setAuthenticationManager(authenticationManager);
+//			return filer;
+//		}
+//		
+//		@Bean
+//		protected AccessDeniedHandler oauthAccessDeniedHandler() {
+//			AccessDeniedHandler oauthAccessDeniedHandler = new OAuth2AccessDeniedHandler();
+//			return oauthAccessDeniedHandler;
+//		}
+//		
+//		@Override
+//		public void configure(ResourceServerSecurityConfigurer resources) {
+//			resources.resourceId(RESOURCE_ID);
+//			resources.tokenStore(tokenStore);
+//		}		
 
-		@Autowired
-		private TokenStore tokenStore;
-		
-		@Autowired
-		private AuthenticationManager authenticationManager;
-		
-		@Bean
-		protected AuthenticationEntryPoint authenticationEntryPoint() {
-			OAuth2AuthenticationEntryPoint authenticationEntryPoint = new OAuth2AuthenticationEntryPoint();
-			return authenticationEntryPoint;
-		}
-		
-		@Bean
-		protected ClientCredentialsTokenEndpointFilter clientCredentialsTokenEndpointFilter() {
-			ClientCredentialsTokenEndpointFilter filer = new ClientCredentialsTokenEndpointFilter();
-			filer.setAuthenticationManager(authenticationManager);
-			return filer;
-		}
-		
-		@Bean
-		protected AccessDeniedHandler oauthAccessDeniedHandler() {
-			AccessDeniedHandler oauthAccessDeniedHandler = new OAuth2AccessDeniedHandler();
-			return oauthAccessDeniedHandler;
-		}
-		
-		@Override
-		public void configure(ResourceServerSecurityConfigurer resources) {
-			resources.resourceId(RESOURCE_ID);
-			resources.tokenStore(tokenStore);
-		}		
-
-		@Override
-		public void configure(HttpSecurity http) throws Exception {
-			
-			http
-			.formLogin().loginPage("/login").permitAll()
-			.and()
-			.requestMatchers()
-			.antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access")
-			.and()
-			.authorizeRequests()
-			.anyRequest()
-			.authenticated()
-			.and()
-			.csrf()
-			.csrfTokenRepository(csrfTokenRepository())
-			.and()
-			.addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
-						
-			http.authorizeRequests()
-			.antMatchers("/oauth/token")
-			.anonymous()
-			.and()
-			.httpBasic().authenticationEntryPoint(authenticationEntryPoint())
-			.and()
-			.exceptionHandling().accessDeniedHandler(oauthAccessDeniedHandler())
-			.and()
-			.addFilterAfter(clientCredentialsTokenEndpointFilter(), BasicAuthenticationFilter.class)
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-			
-			http.authorizeRequests()
-			.antMatchers("/oauth/check_token").access("#oauth2.hasScope('trust')")
-			.and()
-			.httpBasic().authenticationEntryPoint(authenticationEntryPoint())
-			.and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-			
-			http
-			.authorizeRequests()
-			.antMatchers("/**").access("#oauth2.hasScope('read')")
-			.and()
-			.exceptionHandling().accessDeniedHandler(oauthAccessDeniedHandler());
-			
-		}
-		
-		private Filter csrfHeaderFilter() {
-		      return new OncePerRequestFilter() {
-		        @Override
-		        protected void doFilterInternal(HttpServletRequest request,
-		                                        HttpServletResponse response, FilterChain filterChain)
-		            throws ServletException, IOException {
-		          CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class
-		              .getName());
-		          if (csrf != null) {
-		            Cookie cookie = WebUtils.getCookie(request, "XSRF-TOKEN");
-		            String token = csrf.getToken();
-		            if (cookie == null || token != null
-		                && !token.equals(cookie.getValue())) {
-		              cookie = new Cookie("XSRF-TOKEN", token);
-		              cookie.setPath("/");
-		              response.addCookie(cookie);
-		            }
-		          }
-		          filterChain.doFilter(request, response);
-		        }
-		      };
-		    }
-
-		    private CsrfTokenRepository csrfTokenRepository() {
-		      HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-		      repository.setHeaderName("X-XSRF-TOKEN");
-		      return repository;
-		    }
+//		@Override
+//		public void configure(HttpSecurity http) throws Exception {
+//			
+//			http
+//			.formLogin().loginPage("/login").permitAll()
+//			.and()
+//			.requestMatchers()
+//			.antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access")
+//			.and()
+//			.authorizeRequests()
+//			.anyRequest()
+//			.authenticated()
+//			.and()
+//			.csrf()
+//			.csrfTokenRepository(csrfTokenRepository())
+//			.and()
+//			.addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
+//						
+//			http.authorizeRequests()
+//			.antMatchers("/oauth/token")
+//			.anonymous()
+//			.and()
+//			.httpBasic().authenticationEntryPoint(authenticationEntryPoint())
+//			.and()
+//			.exceptionHandling().accessDeniedHandler(oauthAccessDeniedHandler())
+//			.and()
+//			.addFilterAfter(clientCredentialsTokenEndpointFilter(), BasicAuthenticationFilter.class)
+//			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//			
+//			http.authorizeRequests()
+//			.antMatchers("/oauth/check_token").access("#oauth2.hasScope('trust')")
+//			.and()
+//			.httpBasic().authenticationEntryPoint(authenticationEntryPoint())
+//			.and()
+//			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//			
+//			http
+//			.authorizeRequests()
+//			.antMatchers("/**").access("#oauth2.hasScope('read')")
+//			.and()
+//			.exceptionHandling().accessDeniedHandler(oauthAccessDeniedHandler());
+			// @formatter:off
+//		}
 		
 		@Configuration
 		@EnableAuthorizationServer
@@ -239,6 +211,7 @@ public class OAuth2ServerConfiguration {
 			@Override
 			public void configure(AuthorizationServerSecurityConfigurer security)
 					throws Exception {
+				security.checkTokenAccess("isAuthenticated()");
 				security.passwordEncoder(passwordEncoder);
 				security.realm(REALM + "/client");
 			}
@@ -262,4 +235,3 @@ public class OAuth2ServerConfiguration {
 
 	}
 
-}

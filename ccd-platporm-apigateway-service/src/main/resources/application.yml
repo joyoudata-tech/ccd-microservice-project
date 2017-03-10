@@ -11,7 +11,7 @@ eureka:
     fetch-registry: true
     eureka-server-connect-timeout-seconds: 30
     serviceUrl:
-      defaultZone: http://discovery:8761/eureka/
+      defaultZone: http://10.10.100.50:8761/eureka/
   instance:
     lease-renewal-interval-in-seconds: 5
     prefer-ip-address: true
@@ -25,15 +25,13 @@ zuul:
       path: /project-service/**
       service-id: project-service
       
-ribbon:
-  MaxAutoRetries: 1
-  MaxAutoRetriesNextServer: 2
-  OkToRetryOnAllOperations: true
-  eureka:
-    enabled: true
+spring:
+  aop:
+    proxy-target-class: true
 
 security:
-  sessions: ALWAYS
+  basic:
+    enabled: false
   oauth2:
     client:
       access-token-uri: http://127.0.0.1:9093/oauth/token

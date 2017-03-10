@@ -2,6 +2,7 @@ package com.joyoudata.authService.service.security;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -102,6 +103,9 @@ public class ClientDetailService implements ClientDetailsService, ClientRegistra
         bc.setAuthorizedGrantTypes(StringConvertUtils.stringToSet(clientDetails.getAuthorizedGrantTypes()));
         bc.setClientId(clientDetails.getClientId());
         bc.setClientSecret(clientDetails.getClientSecret());
+        if (clientDetails.getAutoapprove()) {
+        	bc.setAutoApproveScopes(StringConvertUtils.stringToSet(clientDetails.getScope()));
+        }        
         bc.setRefreshTokenValiditySeconds(clientDetails.getRefreshTokenValidity());
         bc.setRegisteredRedirectUri(StringConvertUtils.stringToSet(clientDetails.getWebServerRedirectUri()));
         bc.setResourceIds(StringConvertUtils.stringToSet(clientDetails.getResourceIds()));
@@ -122,6 +126,10 @@ public class ClientDetailService implements ClientDetailsService, ClientRegistra
         clientDetails.setScoped(cd.isScoped());
         clientDetails.setSecretRequired(cd.isSecretRequired());
         clientDetails.setClientId(cd.getClientId());
+        Set<String> scopes = StringConvertUtils.stringToSet(clientDetails.getScope());
+        for (String scope : scopes) {
+        	clientDetails.setAutoapprove(cd.isAutoApprove(scope));
+        }        
         return clientDetails;
     }
 

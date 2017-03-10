@@ -46,7 +46,7 @@ oauth2_server:
     accessTokenValidity: 4500
     authorities: trust,read,write
     authorizedGrantTypes: client_credentials,authorization_code,implicit,password,refresh_token
-    scope: trust,read,write
+    scope: openid
     scoped: true
     secretRequired: true
     autoapprove: true
@@ -65,4 +65,4 @@ oauth2_server:
   - username: admin
     password: 123.com
     email: admin@joyoudata.com
-    scope: read,write,trust
+    role: USER,ADMIN 
