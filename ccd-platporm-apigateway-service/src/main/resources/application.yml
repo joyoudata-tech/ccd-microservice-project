@@ -11,10 +11,10 @@ eureka:
     fetch-registry: true
     eureka-server-connect-timeout-seconds: 30
     serviceUrl:
-      defaultZone: http://10.10.100.50:8761/eureka/
+      defaultZone: http://ccd-discovery.dcos.os:8761/eureka/
   instance:
     lease-renewal-interval-in-seconds: 5
-    prefer-ip-address: true
+    hostname: ccd-apigateway.dcos.os
 
 zuul:
   routes:
@@ -24,6 +24,9 @@ zuul:
     project-service: 
       path: /project-service/**
       service-id: project-service
+    uaa:
+      path: /uaa/**
+      url: http://cdd-uaa.dcos.os:9093
       
 spring:
   aop:
@@ -34,9 +37,10 @@ security:
     enabled: false
   oauth2:
     client:
-      access-token-uri: http://127.0.0.1:9093/oauth/token
-      user-authorization-uri: http://127.0.0.1:9093/oauth/authorize
+      access-token-uri: http://cdd-uaa.dcos.os:9093/oauth/token
+      user-authorization-uri: http://cdd-uaa.dcos.os:9093/oauth/authorize
       client-id: restapi
       client-secret: restapipassword
     resource:
-      token-info-uri: http://127.0.0.1:9093/oauth/check_token
+      user-info-uri: http://cdd-uaa.dcos.os:9093/userinfo
+      #token-info-uri: http://127.0.0.1:9093/oauth/check_token

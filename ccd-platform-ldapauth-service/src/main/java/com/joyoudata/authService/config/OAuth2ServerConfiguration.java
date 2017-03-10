@@ -52,6 +52,8 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
@@ -65,12 +67,12 @@ public class OAuth2ServerConfiguration {
 	
 	private static final String RESOURCE_ID = "joyouResource";
 	
-//	@Configuration
-//	@EnableResourceServer
-//	protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
-//
-//		@Autowired
-//		private TokenStore tokenStore;
+	@Configuration
+	@EnableResourceServer
+	protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+
+		@Autowired
+		private TokenStore tokenStore;
 //		
 //		@Autowired
 //		private AuthenticationManager authenticationManager;
@@ -94,11 +96,21 @@ public class OAuth2ServerConfiguration {
 //			return oauthAccessDeniedHandler;
 //		}
 //		
-//		@Override
-//		public void configure(ResourceServerSecurityConfigurer resources) {
-//			resources.resourceId(RESOURCE_ID);
-//			resources.tokenStore(tokenStore);
-//		}		
+		@Override
+		public void configure(ResourceServerSecurityConfigurer resources) {
+			resources.resourceId(RESOURCE_ID);
+			resources.tokenStore(tokenStore);
+		}
+		
+		@Override
+		public void configure(HttpSecurity http) throws Exception {
+			http
+			.requestMatcher(new AntPathRequestMatcher("/userinfo"))
+			.authorizeRequests().anyRequest()
+			.authenticated();
+		}	
+		
+		
 
 //		@Override
 //		public void configure(HttpSecurity http) throws Exception {
@@ -142,7 +154,7 @@ public class OAuth2ServerConfiguration {
 //			.and()
 //			.exceptionHandling().accessDeniedHandler(oauthAccessDeniedHandler());
 			// @formatter:off
-//		}
+		}
 		
 		@Configuration
 		@EnableAuthorizationServer
@@ -211,6 +223,7 @@ public class OAuth2ServerConfiguration {
 			@Override
 			public void configure(AuthorizationServerSecurityConfigurer security)
 					throws Exception {
+				security.tokenKeyAccess("permitAll");
 				security.checkTokenAccess("isAuthenticated()");
 				security.passwordEncoder(passwordEncoder);
 				security.realm(REALM + "/client");

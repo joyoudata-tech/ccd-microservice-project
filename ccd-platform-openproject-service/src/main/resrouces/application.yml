@@ -4,9 +4,9 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://10.10.100.50:8761/eureka/
+      defaultZone: http://ccd-discovery.dcos.os:8761/eureka/
   instance:
-    preferIpAddress: true
+    hostname: ccd-project.dcos.os
     
 spring:
   jpa:
