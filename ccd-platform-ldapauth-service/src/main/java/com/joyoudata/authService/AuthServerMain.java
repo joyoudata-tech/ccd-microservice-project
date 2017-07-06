@@ -2,6 +2,7 @@ package com.joyoudata.authService;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +19,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.ldap.core.ContextSource;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -30,6 +34,7 @@ import com.joyoudata.authService.domain.Oauth2ServerProperty;
 import com.joyoudata.authService.domain.User;
 import com.joyoudata.authService.repository.ClientDetailRepository;
 import com.joyoudata.authService.service.UserService;
+import com.joyoudata.authService.utils.StringConvertUtils;
 
 @Configuration
 @EnableAutoConfiguration
@@ -37,6 +42,7 @@ import com.joyoudata.authService.service.UserService;
 @SessionAttributes("authorizationRequest")
 @ComponentScan
 @RestController
+@EnableDiscoveryClient
 @SpringBootApplication
 public class AuthServerMain extends WebMvcConfigurerAdapter{
 	
@@ -47,10 +53,35 @@ public class AuthServerMain extends WebMvcConfigurerAdapter{
 	}
 	
 	@RequestMapping("/userinfo")
-    public Principal user(Principal user) {
-        return user;
+    public SimpleUser user(Principal user) {
+		//重新设定User
+		List<String> roles = new ArrayList<>();
+		Collection<GrantedAuthority> authorities = ((OAuth2Authentication) user).getAuthorities();
+		authorities.stream().forEach(r -> {
+			roles.add(r.getAuthority());
+		});
+        return new SimpleUser(user.getName(),roles);
     }
+	
+	class SimpleUser {
 
+        String username;
+        List<String> authorities;
+
+        SimpleUser(String username, List<String> authorities) {
+            this.username=username;
+            this.authorities =authorities;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public List<String> getAuthorities() {
+            return authorities;
+        }
+    }
+	
     public static void main(String[] args) {
     	SpringApplication.run(AuthServerMain.class, args);
     }
@@ -97,9 +128,8 @@ public class AuthServerMain extends WebMvcConfigurerAdapter{
                 String encode = passwordEncoder.encode(u.get("password"));
                 adminUser.setPassword(encode);
                 userService.saveUser(adminUser);
-                List<String> employeeRights = new ArrayList<String>();
-                employeeRights.add(u.get("role"));
-                userService.saveUserRolesWithUserName(u.get("username"), employeeRights);
+                List<String> roles = StringConvertUtils.stringToList(u.get("role"));
+                userService.saveUserRolesWithUserName(u.get("username"), roles);
             });
             
             List<Map<String,Object>> oauth_clients = oauth2Server.getClients();

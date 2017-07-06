@@ -42,8 +42,43 @@ public class User {
 	@Column(name="memberOf")
 	private String memberOf;
 	
+	@CreatedDate
+    private Date dateCreated;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<UserRole> userRole = new HashSet<UserRole>(0);
+
+	public User() {
+	}
+
+	public User(String username, String fullName, String lastName, String firstName, String email, String password,
+			String phone, String memberOf, Date dateCreated) {
+		super();
+		this.username = username;
+		this.fullName = fullName;
+		this.lastName = lastName;
+		this.firstName = firstName;
+		this.email = email;
+		this.password = password;
+		this.phone = phone;
+		this.memberOf = memberOf;
+		this.dateCreated = dateCreated;
+	}
+
+	public User(String username, String fullName, String lastName, String firstName, String email, String password,
+			String phone, String memberOf, Date dateCreated, Set<UserRole> userRole) {
+		super();
+		this.username = username;
+		this.fullName = fullName;
+		this.lastName = lastName;
+		this.firstName = firstName;
+		this.email = email;
+		this.password = password;
+		this.phone = phone;
+		this.memberOf = memberOf;
+		this.dateCreated = dateCreated;
+		this.userRole = userRole;
+	}
 
 	public String getMemberOf() {
 		return memberOf;
@@ -52,9 +87,6 @@ public class User {
 	public void setMemberOf(String memberOf) {
 		this.memberOf = memberOf;
 	}
-
-	@CreatedDate
-    private Date dateCreated;
 
 	public String getUsername() {
 		return username;

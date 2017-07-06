@@ -12,8 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.csrf.CsrfFilter;
@@ -24,10 +25,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
-@SpringBootApplication
 @EnableZuulProxy
+@EnableDiscoveryClient
+@ComponentScan
 @EnableOAuth2Sso
-@EnableEurekaClient
+@SpringBootApplication
 public class ApiGatewayServer extends WebSecurityConfigurerAdapter{
 	
     public static void main(String[] args){
@@ -36,11 +38,11 @@ public class ApiGatewayServer extends WebSecurityConfigurerAdapter{
     
     public void configure(HttpSecurity http) throws Exception {
 		http
-				.antMatcher("/**").authorizeRequests()
-				.anyRequest().authenticated()
-				.and().csrf().csrfTokenRepository(csrfTokenRepository())
-				.and().addFilterAfter(csrfHeaderFilter(), CsrfFilter.class)
-				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+		.antMatcher("/**").authorizeRequests()
+		.anyRequest().authenticated()
+		.and().csrf().csrfTokenRepository(csrfTokenRepository())
+		.and().addFilterAfter(csrfHeaderFilter(), CsrfFilter.class)
+		.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
 	}
     
     private Filter csrfHeaderFilter() {

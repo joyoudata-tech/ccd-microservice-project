@@ -16,7 +16,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.joyoudata.authService.domain.User;
-import com.joyoudata.authService.domain.UserRole;
 import com.joyoudata.authService.service.UserService;
 
 @Service
@@ -32,12 +31,13 @@ public class UserAuthConfigService implements UserDetailsService{
 	//获得用户的角色权限
 	public List<GrantedAuthority> getRights(User user) {
 		List<GrantedAuthority> grantedAuthoritys = new LinkedList<>();
-		List<UserRole> userRoles = userService.findRolesByUserName(user);
+		List<String> userRoles = userService.findRolesByUserName(user);
 		if (userRoles != null && !userRoles.isEmpty()) {
 			userRoles.stream().forEach(r -> {
-				grantedAuthoritys.add(new SimpleGrantedAuthority(r.getRole()));
+				grantedAuthoritys.add(new SimpleGrantedAuthority(r));
 			});			
 		}
+		System.out.println("find role: " + userRoles);
 		return grantedAuthoritys;
 	}
 	

@@ -1,0 +1,276 @@
+<div>
+	<div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">项目详单 {{projectData.projectName}}</h3>
+        </div>
+    </div>
+    <div class="row">
+    	<div class="col-lg-8">
+    		<div class="panel panel-info">
+    			<div class="panel-heading">
+    			<i class="fa fa-table"></i>{{projectData.projectName}}                    	 
+                </div>
+                <table width="100%" class="table table-striped table-bordered table-hover">
+                	<thead>
+                		<tr>
+                			<td>项目名称</td>
+                			<td>
+                				<div>
+                					<a href="#/project" editable-text="projectData.projectName"  onaftersave="updateProject()" >{{projectData.projectName || 'empty' }}</a>
+                				</div>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td>厂商联系人</td>
+                			<td>
+                				<div>
+                					<a href="#/project" editable-text="projectData.projectFirm"  onaftersave="updateProject()" >{{projectData.projectFirm || 'empty' }}</a>
+                				</div>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td>服务方联系人</td>
+                			<td>
+                				<div>
+                					<a href="#/project" editable-text="projectData.projectContact"  onaftersave="updateProject()" >{{projectData.projectContact || 'empty'}}</a>
+                				</div>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td>服务方电话</td>
+                			<td>
+                				<div>
+                					<a href="#/project" editable-text="projectData.projectTelphone"  onaftersave="updateProject()" >{{projectData.projectTelphone || 'empty'}}</a>
+                				</div>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td>服务方邮箱</td>
+                			<td>
+                				<div>
+                					<a href="#/project" editable-text="projectData.projectEmail"  onaftersave="updateProject()" >{{projectData.projectEmail || 'empty'}}</a>
+                				</div>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td>SI信息</td>
+                			<td>
+                				<div>
+                					<a href="#/project" editable-text="projectData.projectSi"  onaftersave="updateProject()" >{{projectData.projectSi  || 'empty'}}</a>
+                				</div>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td>产品</td>
+                			<td>
+                				<div>
+                					<a href="#/project" editable-text="projectData.projectProduction"  onaftersave="updateProject()" >{{projectData.projectProduction  || 'empty'}}</a>
+                				</div>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td>服务</td>
+                			<td>
+                				<div>
+                					<a href="#/project" editable-text="projectData.projectService"  onaftersave="updateProject()" >{{projectData.projectService  || 'empty'}}</a>
+                				</div>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td>预计金额</td>
+                			<td>
+                				<div>
+                					<a href="#/project" editable-text="projectData.projectAmount"  onaftersave="updateProject()" >{{projectData.projectAmount  || 'empty'}}</a>
+                				</div>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td><span>项目归属</span></td>
+                			<td>
+                			<div>
+                			<a href="#/project/{{projectData.id}}" editable-select="projectData.projectDepartment" buttons="no" onaftersave='updateProject()'  e-ng-options="s.name for s in projectDepartments">
+    							{{ projectData.projectDepartment.name || 'not set' }}
+  							</a>
+  							</div>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td><span>项目进度</span></td>
+                			<td>
+                			<div>
+                			<a href="#/project/{{projectData.id}}" editable-select="projectData.projectSchedule" buttons="no" onaftersave='updateProject()'  e-ng-options="s.scheduleName for s in projectSchedules">
+    							{{ projectData.projectSchedule.scheduleName || 'not set' }}
+  							</a>
+  							</div>
+                			</td>
+                		</tr>
+                	</thead>
+                </table>
+            </div>
+            <!-- 二级表单 -->
+            <div class="panel panel-info">
+            	<div class="panel-heading">
+    				<i class="fa fa-table"></i>项目概述                   	 
+                </div>               
+               	<table width="100%" class="table table-striped table-bordered table-hover">
+               		<tbody>
+               			<!-- row -->
+               			<tr>
+               				<th class="text-nowrap" scope="row">项目名称</th>
+               				<td>
+               					<div>
+                					<a href="#/project" editable-text="projectData.projectName"  onaftersave="updateProject()" >{{projectData.projectName || 'empty' }}</a>
+                				</div>
+               				</td>
+               				<th class="text-nowrap" scope="row">项目归属</th>
+               				<td>
+               					<div>
+                					<a href="#/project/{{projectData.id}}" editable-select="projectData.projectSchedule" buttons="no" onaftersave='updateProject()'  e-ng-options="s.scheduleName for s in projectSchedules">
+    									{{ projectData.projectSchedule.scheduleName || 'not set' }}
+  									</a>
+  								</div>
+               				</td>
+               			</tr>
+               		</tbody>
+               	</table>
+    		</div>
+    		<!-- 二级表单 -->
+            <div class="panel panel-info">
+            	<div class="panel-heading">
+    				<i class="fa fa-table"></i>三级表单                   	 
+                </div>               
+               	<table width="100%" class="table table-striped table-bordered table-hover">
+               		<tbody>
+               			<!-- row -->
+               			<tr>
+               				<th class="text-nowrap" scope="row">afdsf</th>
+               				<td>adfdsf</td>
+               				<th class="text-nowrap" scope="row">asdfasdf</th>
+               				<td>asdfds</td>
+               			</tr>
+               		</tbody>
+               	</table>
+    		</div>
+    		<!-- 二级表单 -->
+            <div class="panel panel-info">
+            	<div class="panel-heading">
+    				<i class="fa fa-table"></i>四级表单                   	 
+                </div>               
+               	<table width="100%" class="table table-striped table-bordered table-hover">
+               		<tbody>
+               			<!-- row -->
+               			<tr>
+               				<th class="text-nowrap" scope="row">afdsf</th>
+               				<td>adfdsf</td>
+               				<th class="text-nowrap" scope="row">asdfasdf</th>
+               				<td>asdfds</td>
+               			</tr>
+               		</tbody>
+               	</table>
+    		</div>
+    	</div>
+    	<!-- 添加项目进度 -->
+    	<div class="col-lg-4">
+    		<div class="panel panel-warning">
+    			<div class="panel-heading">
+                	<i class="fa fa-bell fa-fw"></i> 项目进度追加栏
+                </div>
+                <div class="panel-body">
+                	<div class="table-responsive">
+                		<table class="table table-striped">
+                			<thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>工程师</th>
+                                    <th>实施日期</th>
+                                    <th>天数</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	<tr data-ng-repeat="saleWorking in projectData.saleWorkings | orderBy:'saleWorkDate' ">
+                                    <td>{{$index + 1}}</td>
+                                    <td class="pop" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="right" data-content={{saleWorking.saleWorkContent}} data-original-title="" title="">{{saleWorking.saleEngineer}}</td>
+                                    <td>{{saleWorking.saleWorkDate | date:'yyyy年MM月dd'}}</td>
+                                    <td>{{saleWorking.saleWorkDays}}</td>
+                                </tr>
+                                <tr>
+                                	<td>合计</td>
+                                	<td></td>
+                                	<td></td>
+                                	<td>{{ projectData.saleWorkings | saleworkDaysSum : 'saleWorkDays'}}</td>
+                                </tr>
+                            </tbody>
+                		</table>
+                		<button class="btn btn-primary btn-sm" data-ng-click="openSaleWorkModal()">添加进度</button>
+                	</div>
+                </div>
+    		</div>
+    	</div>
+    </div>
+</div>
+<script type="text/ng-template" id="project.saleworkmodal.html">
+                		<form method="post" action="" name="saleWorkingForm" class="form-horizontal" role="form" id="form_data" style="margin: 20px;" ng-submit="submitSaleWorkingForm()">
+	           			<div>
+                                   <div >
+                                       <div class="modal-header">
+                                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                               &times;
+                                           </button>
+                                           <h3 class="modal-title" id="myModalLabel">
+                                               	基本进度信息
+                                           </h3>
+                                       </div>
+                                       <div class="modal-body">
+                                           <form class="form-horizontal" role="form" >
+                                               <div class="form-group">
+                                                   <div class="col-sm-9">
+                                                       <input type="hidden" class="form-control" id="projectId" ng-model="formData.projectId" name="projectId" value="{{projectData.id}}" readonly>
+                                                   </div>
+                                               </div>
+                                              
+                                               <div class="form-group">
+                                                   <label for="lastname" class="col-sm-2 control-label">工程师</label>
+                                                   <div class="col-sm-9">
+                                                       <input type="text" class="form-control" name="saleEngineer" value="" id="p_engineer"
+                                                              placeholder="工程师用户名" ng-model="formData.saleEngineer">
+                                                   </div>
+                                               </div>                                                      
+
+                                               <div class="form-group">
+                                                   <label for="remark" class="col-sm-2 control-label">实施日期</label>
+                                                   <div class="col-sm-9 input-group date">
+														<input type="text" class="form-control" datepicker-popup="shortDate" 
+															ng-model="formData.saleWorkDate" is-open="opened" uib-datepicker-popup />
+                                                        <span class="input-group-btn">  
+                        									<button type="button" class="btn btn-default" ng-click="opendate($event)"><i class="glyphicon glyphicon-calendar"></i></button>  
+                    									</span>                                                     
+                                                   </div>
+                                               </div>
+                                               
+                                               <div class="form-group">
+                                                   <label for="remark" class="col-sm-2 control-label">工作人天</label>
+                                                   <div class="col-sm-9">
+                                                       <input  class="form-control"  name="saleWorkDays" value="" id="p_work_days"
+                                                              placeholder="工作人天" ng-model="formData.saleWorkDays">
+                                                       </input>
+                                                   </div>
+                                               </div>
+                                               
+                                               <div class="form-group">
+                                                   <label for="lastname" class="col-sm-2 control-label">工作内容</label>
+                                                   <div class="col-sm-9">
+                                                       <textarea  type="text" class="form-control" name="saleWorkContent" value="" id="p_work_content"
+                                                              placeholder="工作内容" ng-model="formData.saleWorkContent">
+                                                       </textarea>
+                                                   </div>
+                                               </div>
+                                           </form>
+                                       </div>
+                                       <div class="modal-footer">
+                                           <button type="button" class="btn btn-default" ng-click="cancel()">关闭</button>
+                                           <button type="submit" class="btn btn-primary" >提交</button><span id="tip"> </span>
+                                       </div>
+                                   </div>
+                          </div>
+                        </form>
+</script>

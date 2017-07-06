@@ -14,10 +14,10 @@ import org.springframework.hateoas.ResourceProcessor;
 
 import data.domain.Person;
 
-@SpringBootApplication
 @EnableDiscoveryClient
 @EnableZuulProxy
 @EnableHystrix
+@SpringBootApplication
 public class Application 
 {	
     public static void main( String[] args ){

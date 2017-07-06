@@ -39,5 +39,8 @@ public class AppTest
 		System.out.println(string.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(" ", ""));
 		//System.out.println(Arrays.asList(string.replace(oldChar, newChar)));
 		
+		String  charEncode = java.net.URLEncoder.encode("\\.");  
+		System.out.println("字符. 转译后的值为：" + charEncode );
+		
 	}
 }

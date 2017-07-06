@@ -1,0 +1,14 @@
+/* Styles go here */
+
+.box {
+    display:block;
+    width:200px;
+    height:100px;
+    background-color:#DDD;
+}
+#pop {
+    padding:0px 0px;
+}
+#example {
+    position:relative;
+}

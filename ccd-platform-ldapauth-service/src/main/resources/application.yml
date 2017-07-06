@@ -7,10 +7,14 @@ logging:
 
 eureka:
   client:
+    register-with-eureka: true
+    fetch-registry: true
+    eureka-server-connect-timeout-seconds: 30
     serviceUrl:
       defaultZone: http://ccd-discovery.dcos.os:8761/eureka/
   instance:
-    preferIpAddress: true
+    lease-renewal-interval-in-seconds: 5
+    hostname: ccd-uaa.dcos.os
 
 security:
   basic:
@@ -24,14 +28,14 @@ spring:
       ddl-auto: create
   datasource:
     platform: mysql
-    url: jdbc:mysql://192.168.119.134:3306/ccd??useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://192.168.119.139:3306/mydb?useUnicode=true&characterEncoding=UTF-8
     username: myusername
     password: mypassword
     driverClassName: com.mysql.jdbc.Driver    
      
 ldap:
   contextSource:
-    url: ldap://jdc.joyoudata.com:389
+    url: ldap://wdxxsez.gicp.net:27636
     base: DC=joyoudata,DC=com
     userDn: shaopeng.yuan@joyoudata.com
     password: a12345678A
@@ -44,7 +48,7 @@ oauth2_server:
     clientSecret: restapipassword
     refreshTokenValidity: 4500
     accessTokenValidity: 4500
-    authorities: trust,read,write
+    authorities: read,write,trust
     authorizedGrantTypes: client_credentials,authorization_code,implicit,password,refresh_token
     scope: openid
     scoped: true
@@ -55,7 +59,7 @@ oauth2_server:
     clientSecret: projectpassword
     refreshTokenValidity: 4500
     accessTokenValidity: 4500
-    authorities: trust,read,write
+    authorities: read,write,trust
     authorizedGrantTypes: client_credentials,authorization_code,implicit,password,refresh_token
     scope: trust,read,write
     scoped: true
@@ -65,4 +69,4 @@ oauth2_server:
   - username: admin
     password: 123.com
     email: admin@joyoudata.com
-    role: USER,ADMIN 
+    role: ROLE_USER,ROLE_ADMIN

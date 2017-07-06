@@ -1,12 +1,18 @@
 package org.ccd.platform.openproject.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 /**
  * 
  * */
@@ -26,12 +32,14 @@ public class Project implements Serializable{
 //	产品	字符串	p_production
 //	服务	字符串	p_service
 //	预计金额	数字	p_amount
+//  项目归属 p_department
 	
 	//
 	@javax.persistence.Id
 	@Column(name="p_id")
-	@GeneratedValue(strategy= GenerationType.AUTO)
-	private Long projectId;
+	@GeneratedValue(generator="system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
+	private String id;
 	
 	@Column(name="p_name")
 	private String projectName;
@@ -58,7 +66,87 @@ public class Project implements Serializable{
 	private String projectService;
 	
 	@Column(name="p_amount")
-	private String projectAmount;
+	private Integer projectAmount;
+	
+	@ManyToOne
+	@JoinColumn(name="schedule_name")
+	private ProjectSchedule projectSchedule;
+	
+	@ManyToOne
+	@JoinColumn(name="department_name")
+	private ProjectDepartment projectDepartment;
+	
+	@OneToMany(orphanRemoval=true)
+	@JoinColumn(name="p_id")
+	private Set<SaleWorking> saleWorkings = new HashSet<SaleWorking>();
+	
+	public Project() {
+	}
+	
+	public Project(String projectName, String projectContact, String projectTelphone, String projectEmail,
+			String projectSi, String projectFirm, String projectProduction, String projectService,
+			Integer projectAmount, ProjectSchedule projectSchedule, ProjectDepartment projectDepartment) {
+		this.projectName = projectName;
+		this.projectContact = projectContact;
+		this.projectTelphone = projectTelphone;
+		this.projectEmail = projectEmail;
+		this.projectSi = projectSi;
+		this.projectFirm = projectFirm;
+		this.projectProduction = projectProduction;
+		this.projectService = projectService;
+		this.projectAmount = projectAmount;
+		this.projectSchedule = projectSchedule;
+		this.projectDepartment = projectDepartment;
+	}
+	
+	public Project(String projectName, String projectContact, String projectTelphone, String projectEmail,
+			String projectSi, String projectFirm, String projectProduction, String projectService,
+			Integer projectAmount, ProjectSchedule projectSchedule, ProjectDepartment projectDepartment, Set<SaleWorking> saleWorkings) {
+		this.projectName = projectName;
+		this.projectContact = projectContact;
+		this.projectTelphone = projectTelphone;
+		this.projectEmail = projectEmail;
+		this.projectSi = projectSi;
+		this.projectFirm = projectFirm;
+		this.projectProduction = projectProduction;
+		this.projectService = projectService;
+		this.projectAmount = projectAmount;
+		this.projectSchedule = projectSchedule;
+		this.projectDepartment = projectDepartment;
+		this.saleWorkings = saleWorkings;
+	}
+
+	public void setSaleWorkings(Set<SaleWorking> saleWorkings) {
+		this.saleWorkings = saleWorkings;
+	}
+	
+	public Set<SaleWorking> getSaleWorkings() {
+		return saleWorkings;
+	}
+
+	public ProjectDepartment getProjectDepartment() {
+		return projectDepartment;
+	}
+
+	public void setProjectDepartment(ProjectDepartment projectDepartment) {
+		this.projectDepartment = projectDepartment;
+	}
+
+	public ProjectSchedule getProjectSchedule() {
+		return projectSchedule;
+	}
+
+	public void setProjectSchedule(ProjectSchedule projectSchedule) {
+		this.projectSchedule = projectSchedule;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getProjectName() {
 		return projectName;
@@ -124,11 +212,11 @@ public class Project implements Serializable{
 		this.projectService = projectService;
 	}
 
-	public String getProjectAmount() {
+	public Integer getProjectAmount() {
 		return projectAmount;
 	}
 
-	public void setProjectAmount(String projectAmount) {
+	public void setProjectAmount(Integer projectAmount) {
 		this.projectAmount = projectAmount;
 	}
 

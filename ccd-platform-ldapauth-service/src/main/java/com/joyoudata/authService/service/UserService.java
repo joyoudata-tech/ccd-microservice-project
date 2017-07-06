@@ -28,6 +28,16 @@ public class UserService {
 		return userRepository.findByUsername(sAMAccountName);
 	}
 	
+	//自己定义的字段查询，不包含权限
+	public User findUserWithSAMAccountName(String sAMAccountName) {
+		User u = userRepository.findByUsername(sAMAccountName);
+		if (u != null) {
+			return getUserWithoutRole(u);
+		}else{
+			return null;
+		}		
+	}
+	
 	public User saveUser(User user) {
 		return userRepository.save(user);
 	}
@@ -36,8 +46,9 @@ public class UserService {
 		userRepository.deleteAll();
 	}
 	
-	public List<UserRole> findRolesByUserName(User user) {
+	public List<String> findRolesByUserName(User user) {
 		return userRoleRepository.findRoleByUser(user);
+
 	}
 	
 	public List<UserRole> saveUserRolesWithUserName(String sAMAccountName, List<String> roles) {
@@ -62,5 +73,30 @@ public class UserService {
 	
 	public void deleteAllRolesWithUserName(User user) {
 		userRoleRepository.deleteRoleByUser(user);
+	}
+
+	public List<User> findAllUsers() {
+		List<User> users = userRepository.findUsers();
+		return users;
+	}
+
+	public void deleteUserByUsername(String username) {
+		User user = userRepository.findByUsername(username);
+		if (user != null) {
+			userRepository.delete(user);
+		}		
+	}
+	
+	private User getUserWithoutRole(User user) {
+		User u = new User();
+		u.setUsername(user.getUsername());
+		u.setFirstName(user.getUsername());
+		u.setLastName(user.getLastName());
+		u.setFullName(user.getFullName());
+		u.setEmail(user.getEmail());
+		u.setMemberOf(user.getMemberOf());
+		u.setPhone(user.getPhone());
+		u.setDateCreated(user.getDateCreated());
+		return u;
 	}
 }

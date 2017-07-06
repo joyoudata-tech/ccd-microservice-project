@@ -19,28 +19,29 @@ eureka:
 zuul:
   routes:
     apigatewayservice: 
-      path: /zuulgateway/**
+      sensitive-headers: 
       service-id: apigatewayservice
     project-service: 
-      path: /project-service/**
+      sensitive-headers: 
       service-id: project-service
     uaa:
-      path: /uaa/**
-      url: http://cdd-uaa.dcos.os:9093
+      sensitive-headers: 
+      service-id: uaa-service
+    ui:
+      sensitive-headers: 
+      service-id: ui
       
 spring:
   aop:
     proxy-target-class: true
 
 security:
-  basic:
-    enabled: false
   oauth2:
     client:
-      access-token-uri: http://cdd-uaa.dcos.os:9093/oauth/token
-      user-authorization-uri: http://cdd-uaa.dcos.os:9093/oauth/authorize
+      access-token-uri: http://ccd-uaa.dcos.os:9093/oauth/token
+      user-authorization-uri: http://ccd-uaa.dcos.os:9093/oauth/authorize
       client-id: restapi
       client-secret: restapipassword
     resource:
-      user-info-uri: http://cdd-uaa.dcos.os:9093/userinfo
+      user-info-uri: http://ccd-uaa.dcos.os:9093/userinfo
       #token-info-uri: http://127.0.0.1:9093/oauth/check_token

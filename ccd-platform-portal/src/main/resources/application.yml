@@ -1,0 +1,9 @@
+server:
+  port: 9087
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://ccd-discovery.dcos.os:8761/eureka/
+  instance:
+    hostname: ui.dcos.os

@@ -2,14 +2,18 @@ package org.ccd.platform.openproject.controller;
 
 import java.util.List;
 
-import org.ccd.platform.openproject.service.SaleWorkingService;
 import org.ccd.platform.openproject.domain.SaleWorking;
+import org.ccd.platform.openproject.service.SaleWorkingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class SaleWorkingController {
@@ -17,8 +21,9 @@ public class SaleWorkingController {
 	@Autowired
 	private SaleWorkingService saleWorkingService;
 	
-	//创建新工单
-	@RequestMapping(value="saleworking/createOneSaleWorking",method=RequestMethod.POST)
+	@ApiOperation(value="创建一个项目工单", notes="通过工单实体创建")
+	@ApiImplicitParam(name = "saleWorking", value = "项目工单实体", required = true, dataType = "SaleWorking")
+	@RequestMapping(value="saleworkings",method=RequestMethod.POST)
 	public SaleWorking CreateOneWorking(@RequestBody SaleWorking saleWorking){
 		if(saleWorking!=null){
 			saleWorkingService.save(saleWorking);
@@ -26,9 +31,10 @@ public class SaleWorkingController {
 		return saleWorking;
 	}
 	
-	//删除一条工单
-	@RequestMapping(value="saleworking/deleteOneSaleWorking",method=RequestMethod.DELETE)
-	public String DeleteOneSaleWorking(@RequestParam String p_sale_guid){
+	@ApiOperation(value="删除一个项目工单", notes="通过工单guid删除")
+	@ApiImplicitParam(name = "p_sale_guid", value = "项目工单ID", required = true, dataType = "String")
+	@RequestMapping(value="saleworkings/{p_sale_guid}",method=RequestMethod.DELETE)
+	public String DeleteOneSaleWorking(@PathVariable String p_sale_guid){
 		if(!p_sale_guid.isEmpty()){
 			saleWorkingService.deleteOneSaleWorking(p_sale_guid);
 			return "";
@@ -37,9 +43,13 @@ public class SaleWorkingController {
 		}
 	}
 	
-	//修改一条工单内容
-	@RequestMapping(value="saleworking/updateOneSaleWorking",method=RequestMethod.PUT)
-	public SaleWorking UpdateOneSaleWorking(@RequestBody SaleWorking saleWorking){
+	@ApiOperation(value="更新一个项目工单", notes="更新项目工单")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "p_sale_guid", value = "项目工单ID", required = true, dataType = "String"),
+		@ApiImplicitParam(name = "saleWorking", value = "更新项目实体", required = true, dataType = "SaleWorking")
+	})
+	@RequestMapping(value="saleworkings/{p_sale_guid}",method=RequestMethod.PUT)
+	public SaleWorking UpdateOneSaleWorking(@PathVariable String p_sale_guid, @RequestBody SaleWorking saleWorking){
 		if(saleWorking!=null){
 			saleWorkingService.updateOneWorking(saleWorking);
 		    return saleWorking;
@@ -48,8 +58,8 @@ public class SaleWorkingController {
 		}
 	}
 	
-	//查看多有工单
-	@RequestMapping(value="saleworking/getAllSaleWorking",method=RequestMethod.GET)
+	@ApiOperation(value="获取所有项目工单", notes="")
+	@RequestMapping(value="saleworkings",method=RequestMethod.GET)
 	public List<SaleWorking> GetAllSaleWorking(){
 		List<SaleWorking> saleworkings = saleWorkingService.getAllSaleWorking();
 		return saleworkings;

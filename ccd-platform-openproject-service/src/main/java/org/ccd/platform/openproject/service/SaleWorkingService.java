@@ -22,7 +22,7 @@ public class SaleWorkingService {
 	//删除一个工单
 	public void deleteOneSaleWorking(String p_sale_guid) {
 	
-		saleWorkingRepository.delete(Long.valueOf(p_sale_guid));
+		saleWorkingRepository.delete(p_sale_guid);
 	}
 
 	//修改一个工单

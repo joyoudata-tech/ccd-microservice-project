@@ -17,7 +17,7 @@ import com.joyoudata.authService.domain.UserRole;
 @Component(value = "coreLDAPMapper")
 public class LDAPMapperUtil implements AttributesMapper<User> {
 	
-	private String DEFAULT_RIGHT = "read";
+	private String DEFAULT_RIGHT = "ROLE_USER";
 
 	@Override
 	public User mapFromAttributes(Attributes attributes) throws NamingException {
@@ -29,6 +29,9 @@ public class LDAPMapperUtil implements AttributesMapper<User> {
 			user.setEmail((String)attributes.get("mail").get());
 			user.setFullName((String)attributes.get("name").get());
 			user.setMemberOf((String)attributes.get("memberOf").get());
+			user.setPhone((String) attributes.get("mobile").get());
+			user.setFirstName((String) attributes.get("sn").get());
+			user.setLastName((String) attributes.get("givenName").get());
 			UserRole userRole = new UserRole(user, DEFAULT_RIGHT);
 			Set<UserRole> roles = new HashSet<UserRole>();
 			roles.add(userRole);

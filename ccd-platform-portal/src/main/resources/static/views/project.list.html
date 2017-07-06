@@ -1,0 +1,46 @@
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="page-header">项目列表</h2>
+        </div>
+    </div>
+    
+    <div class="row">
+    	<div class="col-lg-12">
+    		<div class="panel panel-default">
+    			<div class="panel-heading">
+                                项目管理-项目详细列表    	
+                	<div class="pull-right">
+                		<a class="right" href="#/newject">添加新项目</a>
+                	</div>                   	
+                </div>
+                
+                <!-- 项目列表开始 -->
+                <div class="panel-body">
+                	<table width="100%" class="table table-striped table-bordered table-hover">
+            		<thead>
+                        <tr>
+                            <th>项目名称</th>
+                            <th>用户名称</th>
+                            <th>预计金额</th>
+                            <th>项目归属</th>
+                            <th>项目进度</th>
+                            <th>删除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    	<tr data-ng-repeat="project in projectDataArray">
+                		<td> <a href="" id="{{project.id}}" data-ng-click="toProjectDetails(project.id)" >{{project.projectName}}</a></td>
+                		<td><span>{{project.projectContact}}</span></td>
+                		<td><span>{{project.projectAmount}}</span></td>
+                		<td><span>{{project.projectFirm}}</span></td>
+                		<td><span>{{project.projectSchedule.scheduleName}}</span></td>
+                		<td><button class="btn btn-warning" ng-click="projectController.deleteOneProject(project.projectName)">删除</button></td>
+            		</tr>
+                    </tbody>            		
+       				</table>
+                </div>               	
+    		</div>
+    	</div>   
+    </div>
+</div>

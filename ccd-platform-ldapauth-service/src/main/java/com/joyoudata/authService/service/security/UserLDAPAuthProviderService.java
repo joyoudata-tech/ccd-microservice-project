@@ -1,6 +1,7 @@
 package com.joyoudata.authService.service.security;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class UserLDAPAuthProviderService implements AuthenticationProvider{
 	@Autowired
 	private LDAPMapperUtil mapperAttributes;
 	
-	private String DEFAULT_RIGHT = "USER";
+	private String DEFAULT_UAA_ROLE = "ROLE_USER";
 	
 	@Override
 	public Authentication authenticate(Authentication a) throws AuthenticationException {
@@ -52,9 +53,10 @@ public class UserLDAPAuthProviderService implements AuthenticationProvider{
 				List<User> users = ldapTemplate.search(LdapUtils.emptyLdapName(), filter.encode(), mapperAttributes);
 				if (!users.isEmpty()) {
 					user = (User) users.get(0);
+					user.setDateCreated(new Date());
 					userService.saveUser(user);
 					List<String> roles = new ArrayList<String>();
-					roles.add(DEFAULT_RIGHT);
+					roles.add(DEFAULT_UAA_ROLE);
 					userService.saveUserRolesWithUserName(username, roles);
 				}
 			}

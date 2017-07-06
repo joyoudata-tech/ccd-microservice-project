@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>OAuth Demo with bootstrap</title>
+    <!-- CSS 样式-->
+    <link href="ui/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="ui/vendor/metisMenu/metisMenu.min.css" rel="stylesheet" />
+    <link href="ui/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="ui/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet" />
+    <link href="ui/css/sb-admin-2.min.css" rel="stylesheet" />
+    <link href="ui/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="ui/vendor/custom/custom.css" rel="stylesheet" />
+    <!-- 
+    <link href="ui/vendor/datapicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+     -->
+    <link href="ui/vendor/xeditable/css/xeditable.min.css" rel="stylesheet" />
+    
+    <style type="text/css">
+        [ng\:cloak],
+        [ng-cloak],
+        [data-ng-cloak],
+        [x-ng-cloak],
+        .ng-cloak,
+        .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body data-ng-app="oauthApp">
+	<div id="wrapper">
+		<!-- Navigation 导航-->
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			<!-- 定义导航头 -->
+			<div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">云计算事业部 项目管理系统</a>
+            </div>
+            <!-- 定义导航头右侧工具  开始-->
+            <ul class="nav navbar-top-links navbar-right">
+            	<li class="dropdown" data-ng-show="userAuthenticated">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> 用户信息</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="" data-ng-click="logout()">登出</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- 定义导航头右侧工具  结束-->
+           	<!-- 定义左侧边栏  开始 -->
+           	<div class="navbar-default sidebar" role="navigation">
+           		<div class="sidebar-nav navbar-collapse">
+           			<!-- 定义菜单 -->
+           			<ul class="nav" id="side-menu">
+           				<li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+           				<li>
+                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                        	<a href="#"><i class="fa fa-wrench fa-fw"></i>项目管理<span class="fa arrow"></span></a>
+                        	<ul class="nav nav-second-level">
+                        		<li>
+                                    <a href="#/project">项目列表</a>
+                                </li>
+                                <li>
+                                    <a href="#/contract">合同管理</a>
+                                </li>
+                        	</ul>
+                        </li>
+                        <li>
+                            <a href="#/user"><i class="fa fa-edit fa-fw"></i>用户管理</a>
+                        </li>
+           			</ul>
+           		</div>
+           	</div>
+           	<!-- 定义左侧边栏  结束 -->
+		</nav>
+		<!-- 定义导航  结束 -->
+		
+		<!-- 定义容器内容  开始  -->
+		<div id="page-wrapper">
+			<div data-ui-view></div>
+		</div>
+	</div>
+
+    <script type="text/javascript" src="ui/js/libs/angular.min.js"></script>
+    <script type="text/javascript" src="ui/js/libs/angular-route.min.js"></script>
+    <script type="text/javascript" src="ui/js/libs/angular-ui-router.min.js"></script>
+    
+    <!-- note jquery tag has to go before boostrap -->
+    <script src="ui/vendor/jquery/jquery.min.js"></script>
+    <script src="ui/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="ui/vendor/custom/custom.js"></script>
+    
+    <script src="ui/vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="ui/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="ui/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="ui/vendor/datatables-responsive/dataTables.responsive.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="ui/js/libs/sb-admin-2.js"></script>
+    <script src="ui/vendor/xeditable/js/xeditable.min.js"></script>
+    
+    
+     <!-- 
+    <script src="ui/vendor/datapicker/js/moment-with-locales.js"></script>    
+   
+    <script src="ui/vendor/datapicker/js/bootstrap-datetimepicker.min.js"></script>
+    -->
+    <script src="ui/vendor/bootstrap/js/ui-bootstrap-tpls-0.12.1.min.js"></script>
+    
+    
+    <!-- angular logic js -->
+    <script type="text/javascript" src="ui/js/app/oauthapp.js"></script>
+    <script type="text/javascript" src="ui/js/app/controller/userController.js"></script>
+    <script type="text/javascript" src="ui/js/app/controller/navController.js"></script>
+    <script type="text/javascript" src="ui/js/app/controller/homeController.js"></script>
+    <script type="text/javascript" src="ui/js/app/controller/projectController.js"></script>
+    <script type="text/javascript" src="ui/js/app/services/dataservice.js"></script>
+    
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+    </script>
+</body>
+
+</html>

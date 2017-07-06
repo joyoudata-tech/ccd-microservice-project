@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 //服务	字符串	p_service
 //预计金额	数字	p_amount
 
-public interface ProjectRepository extends PagingAndSortingRepository<Project,Long> {
+public interface ProjectRepository extends PagingAndSortingRepository<Project,String> {
 	
 	@Transactional
 	Project findByProjectName(String projectName);
