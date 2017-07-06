@@ -35,11 +35,11 @@ spring:
      
 ldap:
   contextSource:
-    url: ldap://wdxxsez.gicp.net:27636
+    url: ldap://test:27636
     base: DC=joyoudata,DC=com
-    userDn: shaopeng.yuan@joyoudata.com
-    password: a12345678A
-    email: shaopeng.yuan@joyoudata.com
+    userDn: test
+    password: test
+    email: test
     
 oauth2_server: 
   clients:
@@ -67,6 +67,6 @@ oauth2_server:
     autoapprove: true
   users: 
   - username: admin
-    password: 123.com
+    password: test
     email: admin@joyoudata.com
     role: ROLE_USER,ROLE_ADMIN
